@@ -1,0 +1,26 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: white;
+}
+
+header {
+    height: 50px;
+    border: 1px solid black;
+    width: 100%;
+    margin: 0px auto;
+}
+
+header h1 {
+  margin: 5px auto 0px auto;
+}
+
+canvas {
+  display: block;
+  margin: auto;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
