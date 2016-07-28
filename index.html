@@ -30,23 +30,23 @@
       let bgColor = `rgba(${bgColorR}, 242, 180, 1)`;
       document.getElementById("canvas").style.backgroundColor = bgColor;
       let colorSliderdx = 10;
-
       let flashFrames = 1;
 
 
       //Ball
-      let x = canvas.width/2;
-      let y = canvas.height-30;
+      let x = 140;
+      let y = 400;
       let dx = 5;
       let dy = -10;
       let ballRadius = 5;
-      let ballColor = "green"
+      let ballColor = "green";
+      let active = true;
 
       //Paddle
       let paddleWidth = 100;
       let paddleHeight = 10;
       let paddlePos = (canvas.width-paddleWidth)/2;
-      let paddleMoveSpeed = 5;
+      let paddleMoveSpeed = 10;
       let paddleBooster = 0;
 
       //Bricks
@@ -55,8 +55,8 @@
       let brickWidth = 70;
       let brickHeight = 20;
       let brickPadding = 15;
-      let brickOffsetTop = 30;
-      let brickOffsetLeft = 30;
+      let brickOffsetTop = 25;
+      let brickOffsetLeft = 25;
       let brickColor = "red";
 
       let bricks = [];
@@ -69,7 +69,17 @@
 
       let remainingBlocks = brickRowCount * brickColumnCount;
 
+      function resetGame(){
+        paddlePos = (canvas.width-paddleWidth)/2;
+        bricks = [];
+        for (col = 0; col < brickColumnCount; col++) {
+          bricks[col] = [];
+          for (row = 0; row < brickRowCount; row++) {
+            bricks[col][row] = { x: 0, y: 0, active: "yes"};
+          }
+        }
 
+      }
       //KeyPress
       let rightPressed = false;
       let leftPressed = false;
@@ -180,6 +190,12 @@
         ctx.fillText("Remaining Blocks: " + remainingBlocks, 15, 12);
       }
 
+      function drawStartText() {
+        ctx.font = "20px Arial";
+        ctx.fillStyle = "Black";
+        ctx.fillText("Press Spacebar to Start", 300, 400)
+      }
+
       function collisionFlash() {
         if (flashFrames == 5) {
           document.getElementById("canvas").style.backgroundColor = `black`;
@@ -226,10 +242,26 @@
         }
       }
 
-
+      function startGameHandler(e) {
+        if (e.keyCode == 32) {
+          document.removeEventListener("keydown", startGameHandler);
+          window.requestAnimationFrame(draw);
+        }
+      }
 
       //Game
-
+      function newGame() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawBox();
+        drawBall();
+        drawPaddle();
+        drawBricks();
+        collisionDetector();
+        collisionFlash();
+        drawScore();
+        drawStartText();
+        document.addEventListener("keydown", startGameHandler, false);
+      }
 
       function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -240,12 +272,10 @@
         collisionDetector();
         collisionFlash();
         drawScore();
-        window.requestAnimationFrame(draw);
+        window.requestAnimationFrame(draw);      
       }
 
-      window.requestAnimationFrame(draw);
-
-
+      newGame();
 
     </script>
   </body>
